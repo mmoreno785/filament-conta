@@ -10,6 +10,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -72,6 +73,7 @@ class TramiteResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('cliente.empresa')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('usuario_id')
                     ->numeric()
@@ -107,9 +109,15 @@ class TramiteResource extends Resource
             ])
             ->filters([
                 //
+                SelectFilter::make('estado')
+                ->options([
+                    0 => 'Pendiente',
+                    1 => 'Cancelado',
+                ])
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
